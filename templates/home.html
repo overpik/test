@@ -1,0 +1,409 @@
+<div class="wrapper">
+    <header class="main-header">
+        <!-- Logo -->
+        <a href="" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini">
+                <b>MI</b>CT</span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg">
+                <b>Admin </b>MICT</span>
+        </a>
+
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+            <!-- Navbar Right Menu -->
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="{{fbimage || 'dist/img/user2-160x160.jpg'}}" class="user-image" alt="User Image">
+                            <span class="hidden-xs">{{fbName || 'Admin'}}</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <img src="{{fbimage || 'dist/img/user2-160x160.jpg'}}" class="img-circle" alt="User Image">
+                                <p>
+                                    {{fbName || ''}}
+                                    <small>{{fbemail || ''}}</small>
+                                </p>
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-right">
+                                    <a class="btn btn-default btn-flat" ng-click="logout()">Sign out</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+        </nav>
+    </header>
+
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- Sidebar user panel -->
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img src="{{fbimage || 'dist/img/user2-160x160.jpg'}}" class="img-circle" alt="User Image">
+                </div>
+                <div class="pull-left info">
+                    <p>{{fbName || 'Admin'}}</p>
+                    <a href="">
+                        <i class="fa fa-circle text-success"></i> Online</a>
+                </div>
+            </div>
+            <!-- search form -->
+            <form action="#" method="get" class="sidebar-form">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search...">
+                    <span class="input-group-btn">
+                        <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>
+            <!-- /.search form -->
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu">
+                <li class="header">MAIN NAVIGATION</li>
+                <li class="active treeview">
+                    <a href="">
+                        <i class="fa fa-dashboard"></i>
+                        <span>Dashboard</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="active">
+                            <a href="#/">
+                                <i class="fa fa-circle-o"></i>
+                                <label>ข้อมูลชุมชน</label>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/index/type">
+                                <i class="fa fa-circle-o"></i>
+                                <label>หมวดหมู่</label>
+                            </a>
+                        </li>
+                        <!-- <li><a href="#/blog"><i class="fa fa-circle-o"></i> Blog</a></li> -->
+                    </ul>
+                </li>
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+
+    <div class="content-wrapper">
+        <section class="content">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Horizontal Form -->
+                    <div class="box box-danger" ng-hide="boxData">
+                        <div class="box-header with-border">
+                            <h3 class="box-title" style="font-family: 'SUPERMARKET'">ข้อมูลชุมชน</h3>
+                            <button class="btn btn-success pull-right" ng-click="setShowBoxInsert();selectedType(data.type);clearData();">เพิ่มข้อมูลชุมชน</button>
+                            <br>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-1 control-label">หมวดหมู่</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control textinput" ng-model="item.value" ng-change="selectedType(item.value);setTitleTable()">
+                                            <option value="" disabled="disabled">เลือกหมวดหมู่</option>
+                                            <option value="{{item.id}}" ng-repeat="item in types.values" ng-selected="item.id == data.type">{{item.name}}</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-7"></div>
+                                    <label for="inputEmail3" class="col-sm-1 col control-label text-right">ค้นหา</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control textinput" placeholder="ค้นหา" ng-model="search">
+                                    </div>
+                                    <div class="col-sm-1" style="padding-right: 2%">
+                                        <button type="button" class="btn bg-purple" ng-click="setLocationPath();activated('1');getCount(data.type)">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-1"></div>
+                                </div>
+
+                            </form>
+                            <div ng-hide="loadingData" class="loader"></div>
+                            <table id="example2" class="table table-bordered table-striped" style="width: 100%">
+                                <colgroup>
+                                    <col span="1" style="width: 5%;">
+                                    <col span="1" style="width: 25%;">
+                                    <col span="1" style="width: 35%;">
+                                    <col span="1" style="width: 10%;">
+                                    <col span="1" style="width: 15%;">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">No.</th>
+                                        <th class="text-center">{{titleTalble}}</th>
+                                        <th class="text-center">ที่อยู่</th>
+                                        <th class="text-center">รูป</th>
+                                        <th class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in getDataAll">
+                                        <td>{{$index + getPage}}</td>
+                                        <td ng-if="item.title">{{item.title}}</td>
+                                        <td ng-if="item.fullName">{{item.fullName}}</td>
+                                        <td ng-if="!item.fullName && !item.title"></td>
+                                        <td>{{item.locationName}}</td>
+                                        <td class="text-center">
+                                            <button class="btn btn-success btn-sm" ng-if="item.imageStatus" ng-click="showImage(item.id)">ดูรูป</button>
+                                        </td>
+                                        <td class="text-center">
+                                            <button class="btn btn-danger btn-sm" ng-click="delete(item.id)">ลบ</button>
+                                            <button class="btn btn-info btn-sm" ng-click="updateData(item.id)">แก้ไข</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="text-right">
+                                <pagination count="getLengthData" take="take" activate="activated" max-size="maxSize" hide-arrows="false"></pagination>
+                            </div>
+
+                        </div>
+                        <!-- /.box-body -->
+                        <!-- <div class="box-footer">
+                    <button class="btn btn-info pull-right" ng-click="uploadFile()">Save</button>
+                </div> -->
+                    </div>
+
+                    <div class="box box-info" ng-hide="boxInsert">
+                        <div class="box-header with-border">
+                            <h3 class="box-title" style="font-family: 'SUPERMARKET'">เพิ่มข้อมูลชุมชน</h3>
+                            <button class="btn btn-info pull-right" ng-click="setShowBoxData();selectedType(data.type)">ดูข้อมูลชุมชน</button>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- form start -->
+                        <form name="myForm" class="form-horizontal" novalidate>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-1 control-label">หมวดหมู่</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-control textinput" ng-model="item.value" ng-change="selectedType(item.value);">
+                                            <option value="" disabled="disabled">เลือกหมวดหมู่</option>
+                                            <option value="{{item.id}}" ng-repeat="item in types.values" ng-selected="item.id == data.type">{{item.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- showPerson -->
+                                <div ng-hide="showPerson">
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label">ชื่อ - นามสกุล
+                                            <!-- <label style="color: red;font-size: 20px">*</label> -->
+                                        </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control textinput change" placeholder="กรุณาระบุ ชื่อ - นามสกุล" name="fullName" ng-model="data.fullName"
+                                                required>
+                                            <!-- <p ng-show="myForm.fullName.$touched && myForm.fullName.$invalid" class="help-block" style="color: #dd4b39">You name is required.</p> -->
+                                        </div>
+
+                                        <label for="inputPassword3" class="col-sm-2 control-label">ช่วงเวลาเริ่ม</label>
+                                        <div class="col-sm-2">
+                                            <input type="date" placeholder="เริ่มต้น" class="form-control textinput" ng-model="data.startDate">
+                                        </div>
+                                        <label for="inputPassword3" class="col-sm-1 control-label">ช่วงเวลาสิ้นสุด</label>
+                                        <div class="col-sm-2">
+                                            <input type="date" placeholder="สิ้นสุด" class="form-control textinput" ng-model="data.endDate">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description" class="col-sm-1 control-label">ความสามารถ/ผลงาน</label>
+                                        <div class="col-sm-5">
+                                            <textarea class="form-control textinput" style="overflow-x: hidden;resize: none;" ng-model="data.talent" rows="4"></textarea>
+                                        </div>
+                                        <label for="description" class="col-sm-1 control-label">การศึกษา</label>
+                                        <div class="col-sm-5">
+                                            <textarea class="form-control textinput" ng-model="data.education" rows="4" style="overflow-x: hidden;resize: none;"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description" class="col-sm-1 control-label">การอบรม</label>
+                                        <div class="col-sm-5">
+                                            <textarea class="form-control textinput" ng-model="data.train" rows="4" style="overflow-x: hidden;resize: none;"></textarea>
+                                        </div>
+                                        <label for="description" class="col-sm-1 control-label">หมายเหตุ</label>
+                                        <div class="col-sm-5">
+                                            <textarea class="form-control textinput" ng-model="data.note" rows="4" style="overflow-x: hidden;resize: none;"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description" class="col-sm-1 control-label" ng-class="{ 'error-form' : myForm.email.$dirty && myForm.email.$error.email }">URL </label>
+                                        <div class="col-sm-5">
+                                            <input type="email" class="form-control textinput" ng-class="{ 'error-form' : myForm.email.$dirty && myForm.email.$error.email }"
+                                                name="email" placeholder="www.domainname.com" ng-model="data.url" required>
+                                            <span ng-show="myForm.email.$dirty && myForm.email.$error.email" style="color: #dd4b39">Invalid email address.</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- <div ng-hide="showData"> -->
+                                <div ng-hide="showData">
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-1 control-label">หัวเรื่อง </label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control textinput change" placeholder="กรุณาระบุ หัวเรื่อง" name="title" ng-model="data.title" required>
+                                            <!-- <p ng-show="myForm.title.$touched && myForm.title.$invalid" class="help-block" style="color: #dd4b39">Title is required.</p> -->
+                                        </div>
+                                        <label for="inputPassword3" class="col-sm-2 control-label">ช่วงเวลาเริ่ม</label>
+                                        <div class="col-sm-2">
+                                            <input type="date" placeholder="เริ่มต้น" class="form-control textinput" ng-model="data.startDate">
+                                        </div>
+                                        <label for="inputPassword3" class="col-sm-1 control-label">ช่วงเวลาสิ้นสุด</label>
+                                        <div class="col-sm-2">
+                                            <input type="date" placeholder="สิ้นสุด" class="form-control textinput" ng-model="data.endDate">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description" class="col-sm-1 control-label">รายละเอียด</label>
+                                        <div class="col-sm-5">
+                                            <textarea class="form-control textinput" ng-model="data.details" rows="4" style="overflow-x: hidden;resize: none;"></textarea>
+                                        </div>
+                                        <label for="description" class="col-sm-1 control-label">หมายเหตุ</label>
+                                        <div class="col-sm-5">
+                                            <textarea class="form-control textinput" ng-model="data.note" rows="4" style="overflow-x: hidden;resize: none;"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description" class="col-sm-1 control-label">URL </label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control textinput" id="inputPassword3" placeholder="www.domainname.com" ng-model="data.url">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="box box-warning" ng-hide="boxMap">
+                        <div class="box-header with-border">
+                            <h3 class="box-title" style="font-family: 'SUPERMARKET'">Location</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <form name="map" class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="us3-address" class="col-sm-1 control-label">ค้นหาสถานที่</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control textinput" id="us3-address">
+                                    </div>
+                                    <label for="us3-lat" class="col-sm-1 control-label">Lat</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control textinput" id="us3-lat">
+                                    </div>
+                                    <label for="us3-lon" class="col-sm-1 control-label">Long</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" class="form-control textinput" id="us3-lon">
+                                    </div>
+                                    <label for="us3-address" class="col-sm-1 control-label">รัศมี</label>
+                                    <div class="col-sm-1">
+                                        <input type="text" class="form-control textinput" id="us3-radius">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="us3-address" class="col-sm-1 control-label">ที่อยู่เพิ่มเติม</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" class="form-control textinput" placeholder="ซอย/อาคาร/ถนน" ng-model="address">
+                                    </div>
+                                    <label for="us3-address" class="col-sm-1 control-label">ที่อยู่ปัจจุบัน</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control textinput" ng-model="locationAddress" required>
+                                    </div>
+                                </div>
+                                <div style="padding: 1%">
+                                    <div id="us3" style="width: auto; height: 450px;"></div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="box-footer" ng-hide="showPerson">
+                            <button type="button" class="btn btn-default" ng-click="testData()">ยกเลิก</button>
+                            <button type="submit" class="btn btn-info pull-right" ng-disabled="myForm.fullName.$invalid" ng-click="insertData()">บันทึก</button>
+                        </div>
+                        <div class="box-footer" ng-hide="showData">
+                            <button type="button" class="btn btn-default" ng-click="testData()">ยกเลิก</button>
+                            <button type="submit" class="btn btn-info pull-right" ng-disabled="myForm.title.$invalid" ng-click="insertData()">บันทึก</button>
+                        </div>
+                    </div>
+
+                    <div class="box box-warning" ng-hide="boxImage">
+                        <div class="box-header with-border">
+                            <h3 class="box-title" style="font-family: 'SUPERMARKET'">รูปภาพ</h3>
+
+                            <label for="file-upload" class="col-sm-1 custom-file-upload pull-right text-center">เลือกรูป</label>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="form-group">
+                                <input id="file-upload" type="file" style="display: none;" ng-file-model="files" onchange="angular.element(this).scope().fileNameChanged()"
+                                    multiple />
+                            </div>
+                            <section>
+                                <div class="container gal-container">
+                                    <div class="col-md-2 col-sm-4 co-xs-6 gal-item" ng-repeat="file in multiFile">
+                                        <div class="box">
+                                            <a data-toggle="modal" data-target="#{{$index + 1}}">
+                                                <img ng-src="{{file.url}}">
+                                            </a>
+                                            <div class="modal fade" id="{{$index + 1}}" tabindex="-1" role="dialog">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">ปิด</span>
+                                                        </button>
+                                                        <div class="modal-body">
+                                                            <img ng-src="{{file.url}}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="text-center">
+                                            <button class="btn btn-danger btn-xs" ng-click="removeImage(file.id)">ลบ</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </div>
+
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 1.0.0
+        </div>
+        <strong>Copyright
+            <strong style="font-family: none">&copy;</strong> 2014-2016
+            <a href="">MICT-VEC</a>.</strong> All rights reserved.
+    </footer>
+    <div class="control-sidebar-bg"></div>
+
+</div>

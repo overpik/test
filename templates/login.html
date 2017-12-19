@@ -1,0 +1,49 @@
+<div class="login-box">
+  <div class="login-logo">
+    <a href="">
+      <b>MICT-</b>VEC</a>
+  </div>
+  <!-- /.login-logo -->
+  <div class="login-box-body">
+    <p class="login-box-msg">เข้าสู่ระบบ</p>
+
+    <form name="frmLogin" method="post">
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control" placeholder="Username" name="username" ng-model="data.username" ng-class="{ 'error-form' :frmLogin.username.$touched && frmLogin.username.$invalid }"
+          required>
+        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+      </div>
+      <p ng-show="frmLogin.username.$touched && frmLogin.username.$invalid" class="help-block" style="color: #dd4b39">Username is required.</p>
+      <div class="form-group has-feedback">
+        <input type="password" class="form-control" placeholder="Password" name="password" ng-model="data.password" ng-class="{ 'error-form' :frmLogin.password.$touched && frmLogin.password.$invalid }"
+          required>
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <p ng-show="frmLogin.password.$touched && frmLogin.password.$invalid" class="help-block" style="color: #dd4b39">Password is required.</p>
+      <div class="row">
+        <div class="col-xs-12">
+          <p ng-if="checked" class="help-block" style="color: #dd4b39">user หรือ password ผิด</p>
+          <p ng-if="loginerror" class="help-block" style="color: #dd4b39">{{loginerror}}</p>
+          <button type="submit" class="btn bg-orange btn-block btn-flat" ng-disabled="frmLogin.username.$invalid || frmLogin.password.$invalid || showLoading == true"
+            ng-click="checkLogin()"><i class="glyphicon glyphicon-refresh spinning" style="font-size: 13px" ng-if="showLoading"></i>  {{txtLogin}}</button>
+        </div>
+        <!-- /.col -->
+      </div>
+    </form>
+
+    <!--<div class="social-auth-links text-center">
+      <p>- หรือ -</p>
+      <a fb-login class="btn btn-block btn-social btn-facebook btn-flat">
+        <i class="fa fa-facebook"></i> Sign in using Facebook
+      </a>
+       <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
+        Google+</a> 
+    </div>-->
+    <!-- <button fb-login type="button">facebook Login</button> -->
+
+    <!-- <a href="#">I forgot my password</a>
+    <br>
+    <a href="register.html" class="text-center">Register a new membership</a> -->
+
+  </div>
+</div>
